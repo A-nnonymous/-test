@@ -42,13 +42,25 @@ void main()
 	}
 	/*------------array merging test------------------------*/
 
+	/*--------------array piv parting test------------------*/
+	int test_array[MAXSIZE]; int t_length;
+	int piv_index;
+	init_array(test_array, t_length);
+	piv_index = piv_partingP(test_array, t_length, 0);
+	for (int i = 0; i < t_length; i++)
+	{
+		cout << "The " << i << "th item is" << test_array[i] << endl;
+	}
+	cout << "The " << piv_index << " item is the piv" << endl;
+	/*--------------array piv parting test------------------*/
+
 	/*-------------linked list merging test--------------------*/
-	LNode* llst1, * llst2, * output;
+	/*LNode* llst1, * llst2, * output;
 	int l1, l2;
 	l1 = init_linklist_rear(llst1); l2 = init_linklist_rear(llst2);
 	output = llst1;
-	linked_mergeingP(llst1, l1, llst2, l2, output);
-	linked_traverse_and_print(output, l1 + l2 + 1);
+	linked_mergeingN(llst1, l1, llst2, l2, output);
+	linked_traverse_and_print(output);
 
 	/*-------------linked list merging test--------------------*/
 }

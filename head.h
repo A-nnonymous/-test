@@ -2,13 +2,13 @@
 #include<iostream>
 #define MAXSIZE 10
 using namespace std;
-
+/*------------------node defining---------------------*/
 typedef struct LNode {
 	int data;
 	struct LNode* next;
 }LNode;
 
-/*----------array------------------------------*/
+/*----------array-------------------------------------*/
 int init_array(int array[], int& length)
 {
 	cout << "input the array length:";
@@ -23,6 +23,7 @@ int init_array(int array[], int& length)
 	return 1;
 }
 
+/*-----------merging--------------*/
 void array_mergingP(int a1[], int l1, int a2[], int l2, int output[])
 {
 	int i = 0, j = 0, k = 0;
@@ -71,7 +72,36 @@ void array_mergingN(int a1[], int l1, int a2[], int l2, int output[])
 	}
 }
 
-/*-------------linked list---------------------------*/
+/*-----------piv parting----------*/
+
+int piv_partingP(int array[], int length, int piv_position)
+{
+	if (length > MAXSIZE)return 0;
+	int temp;
+	int left = 0, right = length - 1;
+	temp = array[0];
+	array[0] = array[piv_position];
+	array[piv_position] = temp;
+	temp = array[0];
+
+	while (left < right)
+	{
+		while (left<right && array[right]>temp)right--;
+		if (left < right)
+		{
+			array[left++] = array[right];
+		}
+		while (left < right && array[left] < temp)left++;
+		if (left < right)
+		{
+			array[right--] = array[left];
+		}
+	}
+	array[left] = temp;
+	return left;
+}
+
+/*-------------linked list----------------------------*/
 int init_linklist_rear(LNode*& head)
 {
 	head = (LNode*)malloc(sizeof(LNode));
@@ -107,6 +137,7 @@ int init_linklist_head(LNode*& head)
 	return n;
 }
 
+/*-----------merging--------------*/
 void linked_mergeingP(LNode* llst1, int l1, LNode* llst2, int l2, LNode*& output)
 {
 	LNode* p, * q, * r;
@@ -116,27 +147,58 @@ void linked_mergeingP(LNode* llst1, int l1, LNode* llst2, int l2, LNode*& output
 	{
 		if (p->data < q->data)
 		{
-			r->next = p; p = p->next;
-			r = r->next;
+			r->next = p; p = p->next; r = r->next;
 		}
 		else
 		{
-			r->next = q; q = q->next;
-			r = r->next;
+			r->next = q; q = q->next; r = r->next;
 		}
 	}
-	if (p != NULL)p = r->next;
-	if (q != NULL)q = r->next;
+	if (p != NULL)r->next = p;
+	if (q != NULL)r->next = q;
 }
+
 void linked_mergeingN(LNode* llst1, int l1, LNode* llst2, int l2, LNode*& output)
 {
+	LNode* p, * q, * newhead, * insertion;
+	p = llst1->next; q = llst2->next;
+	newhead = llst1; newhead->next = NULL; free(llst2);
+	while (p != NULL && q != NULL)
+	{
+		if (p->data < q->data)
+		{
+			insertion = p; p = p->next;
+			insertion->next = newhead->next;
+			newhead->next = insertion;
+		}
+		else
+		{
+			insertion = q; q = q->next;
+			insertion->next = newhead->next;
+			newhead->next = insertion;
+		}
+	}
+	while (p != NULL)
+	{
+		insertion = p; p = p->next;
+		insertion->next = newhead->next;
+		newhead->next = insertion;
+	}
+	while (q != NULL)
+	{
+		insertion = q; q = q->next;
+		insertion->next = newhead->next;
+		newhead->next = insertion;
+	}
 }
-void linked_traverse_and_print(LNode* head, int n)
+
+/*-----------traversing-----------*/
+void linked_traverse_and_print(LNode* head)
 {
 	LNode* current_item = head;
-	for (int i = 0; i < n; i++)
-	{
-		cout << "The " << i << "th item`s data is" << current_item->next->data << endl;
-		current_item = current_item->next;
-	}/*null ptr cannot be used???*/
+	int i = 0;
+	while (current_item->next != NULL) {
+		cout << "The " << i << "th item`s data is:" << current_item->next->data << endl;
+		i++; current_item = current_item->next;
+	}
 }
